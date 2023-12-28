@@ -1,0 +1,81 @@
+export default [
+  { id: "1", slug: "adrar-1", name: "Adrar", __typename: "Region" },
+  { id: "2", slug: "chlef-2", name: "Chlef", __typename: "Region" },
+  { id: "3", slug: "laghouat-3", name: "Laghouat", __typename: "Region" },
+  {
+    id: "4",
+    slug: "oum-el-bouaghi-4",
+    name: "Oum el bouaghi",
+    __typename: "Region"
+  },
+  { id: "5", slug: "batna-5", name: "Batna", __typename: "Region" },
+  { id: "6", slug: "bejaia-6", name: "Bejaia", __typename: "Region" },
+  { id: "7", slug: "biskra-7", name: "Biskra", __typename: "Region" },
+  { id: "8", slug: "bechar-8", name: "Bechar", __typename: "Region" },
+  { id: "9", slug: "blida-9", name: "Blida", __typename: "Region" },
+  { id: "10", slug: "bouira-10", name: "Bouira", __typename: "Region" },
+  {
+    id: "11",
+    slug: "tamanrasset-11",
+    name: "Tamanrasset",
+    __typename: "Region"
+  },
+  { id: "12", slug: "tebessa-12", name: "Tebessa", __typename: "Region" },
+  { id: "13", slug: "tlemcen-13", name: "Tlemcen", __typename: "Region" },
+  { id: "14", slug: "tiaret-14", name: "Tiaret", __typename: "Region" },
+  { id: "15", slug: "tizi-ouzou-15", name: "Tizi ouzou", __typename: "Region" },
+  { id: "16", slug: "alger-16", name: "Alger", __typename: "Region" },
+  { id: "17", slug: "djelfa-17", name: "Djelfa", __typename: "Region" },
+  { id: "18", slug: "jijel-18", name: "Jijel", __typename: "Region" },
+  { id: "19", slug: "setif-19", name: "Setif", __typename: "Region" },
+  { id: "20", slug: "saida-20", name: "Saida", __typename: "Region" },
+  { id: "21", slug: "skikda-21", name: "Skikda", __typename: "Region" },
+  {
+    id: "22",
+    slug: "sidi-bel-abbes-22",
+    name: "Sidi bel abbes",
+    __typename: "Region"
+  },
+  { id: "23", slug: "annaba-23", name: "Annaba", __typename: "Region" },
+  { id: "24", slug: "guelma-24", name: "Guelma", __typename: "Region" },
+  {
+    id: "25",
+    slug: "constantine-25",
+    name: "Constantine",
+    __typename: "Region"
+  },
+  { id: "26", slug: "medea-26", name: "Medea", __typename: "Region" },
+  { id: "27", slug: "mostaganem-27", name: "Mostaganem", __typename: "Region" },
+  { id: "28", slug: "msila-28", name: "Msila", __typename: "Region" },
+  { id: "29", slug: "mascara-29", name: "Mascara", __typename: "Region" },
+  { id: "30", slug: "ouargla-30", name: "Ouargla", __typename: "Region" },
+  { id: "31", slug: "oran-31", name: "Oran", __typename: "Region" },
+  { id: "32", slug: "el-bayadh-32", name: "El bayadh", __typename: "Region" },
+  { id: "33", slug: "illizi-33", name: "Illizi", __typename: "Region" },
+  {
+    id: "34",
+    slug: "bordj-bou-arreridj-34",
+    name: "Bordj bou arreridj",
+    __typename: "Region"
+  },
+  { id: "35", slug: "boumerdes-35", name: "Boumerdes", __typename: "Region" },
+  { id: "36", slug: "el-taref-36", name: "El taref", __typename: "Region" },
+  { id: "37", slug: "tindouf-37", name: "Tindouf", __typename: "Region" },
+  { id: "38", slug: "tissemsilt-38", name: "Tissemsilt", __typename: "Region" },
+  { id: "39", slug: "el-oued-39", name: "El oued", __typename: "Region" },
+  { id: "40", slug: "khenchela-40", name: "Khenchela", __typename: "Region" },
+  { id: "41", slug: "souk-ahras-41", name: "Souk ahras", __typename: "Region" },
+  { id: "42", slug: "tipaza-42", name: "Tipaza", __typename: "Region" },
+  { id: "43", slug: "mila-43", name: "Mila", __typename: "Region" },
+  { id: "44", slug: "ain-defla-44", name: "Ain defla", __typename: "Region" },
+  { id: "45", slug: "naama-45", name: "Naama", __typename: "Region" },
+  {
+    id: "46",
+    slug: "ain-temouchent-46",
+    name: "Ain temouchent",
+    __typename: "Region"
+  },
+  { id: "47", slug: "ghardaia-47", name: "Ghardaia", __typename: "Region" },
+  { id: "48", slug: "relizane-48", name: "Relizane", __typename: "Region" },
+  { id: "49", slug: "etranger-49", name: "Etranger", __typename: "Region" }
+];

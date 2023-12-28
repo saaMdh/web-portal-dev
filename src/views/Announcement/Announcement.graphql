@@ -1,0 +1,342 @@
+#import "@/components/Announcement/AnnouncementCard.graphql"
+#import "@/components/Announcement/AnnouncementCardMini.graphql"
+
+query AnnouncementGet($id: ID!) {
+  announcement: announcementDetails(id: $id) {
+    id
+    reference
+    title
+    slug
+    description
+    orderExternalUrl
+    createdAt: refreshedAt
+    price
+    pricePreview
+    oldPrice
+    oldPricePreview
+    priceType
+    exchangeType
+    priceUnit
+    hasDelivery
+    deliveryType
+    hasPhone
+    hasEmail
+    quantity
+    status
+    street_name
+    category {
+      id
+      slug
+      name
+      deliveryType
+    }
+    defaultMedia(size: ORIGINAL) {
+      mediaUrl
+    }
+    medias(size: LARGE) {
+      mediaUrl
+      mimeType
+      thumbnail
+    }
+    categories {
+      id
+      name
+      slug
+    }
+    specs {
+      specification {
+        label
+        codename
+        type
+      }
+      value
+      valueText
+    }
+    user {
+      id
+      username
+      displayName
+      avatarUrl
+    }
+    isFromStore
+    store {
+      id
+      name
+      slug
+      description
+      imageUrl
+      url
+      followerCount
+      announcementsCount
+      locations {
+        location {
+          address
+          region {
+            slug
+            name
+          }
+        }
+      }
+      categories {
+        name
+        slug
+      }
+    }
+    cities {
+      id
+      name
+      region {
+        id
+        name
+        slug
+      }
+    }
+    isCommentEnabled
+    noAdsense
+    variants {
+      id
+      hash
+      specifications {
+        specification {
+          codename
+          label
+        }
+        valueText
+        value
+        mediaUrl
+      }
+      price
+      oldPrice
+      pricePreview
+      oldPricePreview
+      quantity
+    }
+    showAnalytics
+    messengerLink
+  }
+}
+query AnnouncementReactions($id: ID!) {
+  reactions: announcementDetails(id: $id) {
+    id
+    viewCount
+    likeCount
+    userReaction {
+      isBookmarked
+      isLiked
+    }
+  }
+}
+
+query AnnouncementCommentsGet($id: ID!, $first: Int = 10, $page: Int!) {
+  commentsList: announcementCommentList(
+    announcementId: $id
+    first: $first
+    page: $page
+    orderBy: { column: CREATED_AT, order: DESC }
+  ) {
+    data {
+      id
+      createdAt
+      content
+      likesCount
+      dislikesCount
+      iReported
+      user {
+        id
+        username
+        displayName
+        avatarUrl
+      }
+      store {
+        id
+        name
+        slug
+        imageUrl
+      }
+      replies {
+        id
+        createdAt
+        content
+        likesCount
+        dislikesCount
+        iReported
+        user {
+          id
+          username
+          displayName
+          avatarUrl
+        }
+        store {
+          id
+          name
+          slug
+          imageUrl
+        }
+      }
+    }
+    paginatorInfo {
+      hasMorePages
+    }
+  }
+}
+
+query AnnouncementSuggestions(
+  $id: ID!
+  $count: Int
+  $offset: Int
+  $mediaSize: MediaSize = SMALL
+) {
+  list: announcementSuggestions(id: $id, count: $count, offset: $offset) {
+    id
+    title
+    slug
+    defaultMedia(size: $mediaSize) {
+      mediaUrl
+    }
+    userReaction {
+      isBookmarked
+      isLiked
+    }
+    hasDelivery
+    deliveryType
+    likeCount
+    status
+    pricePreview
+    priceUnit
+    oldPrice
+    oldPricePreview
+    store {
+      id
+    }
+    user {
+      id
+    }
+  }
+}
+
+query SameAuthor(
+  $filter: SearchFilterInput!
+  $mediaSize: MediaSize = SMALL
+  $hideStore: Boolean = true
+) {
+  list: search(filter: $filter) {
+    announcements {
+      data {
+        ...AnnouncementMiniContent
+      }
+    }
+  }
+}
+
+query SameAuthorReaction($filter: SearchFilterInput!) {
+  list: search(filter: $filter) {
+    announcements {
+      data {
+        ...AnnouncementMiniContentReaction
+      }
+    }
+  }
+}
+
+mutation Comment($id: ID!, $message: String!, $commentId: ID) {
+  announcementCommentCreate(
+    announcementId: $id
+    content: $message
+    parentId: $commentId
+  ) {
+    id
+    createdAt
+    content
+    iReported
+    user {
+      id
+      username
+      displayName
+      avatarUrl
+    }
+    store {
+      id
+      name
+      slug
+      imageUrl
+    }
+    replies {
+      id
+      createdAt
+      content
+      likesCount
+      dislikesCount
+      iReported
+      user {
+        id
+        username
+        displayName
+        avatarUrl
+      }
+      store {
+        id
+        name
+        slug
+        imageUrl
+      }
+    }
+  }
+}
+
+mutation CommentReport($id: ID!) {
+  announcementCommentReport(id: $id) {
+    id
+  }
+}
+
+mutation CommentReaction($commentId: ID!, $type: ReactionType!) {
+  announcementCommentReact(commentId: $commentId, type: $type) {
+    id
+    comment {
+      id
+      likesCount
+      dislikesCount
+    }
+  }
+}
+
+mutation CommentDelete($id: ID!) {
+  announcementCommentDelete(id: $id) {
+    id
+    histories {
+      id
+      action
+      comment {
+        id
+      }
+    }
+  }
+}
+mutation Delete($ids: [ID!]!, $reason: MemberAnnouncementDeleteReason!) {
+  announcementDelete(ids: $ids, reason: $reason)
+}
+mutation DeleteForAdmin($id: ID!, $reason: ModeratorAnnouncementDeleteReason!) {
+  announcementDeleteForAdmin(id: $id, reason: $reason)
+}
+
+mutation Refresh($ids: [ID!]!) {
+  announcementRefresh(ids: $ids) {
+    id
+  }
+}
+
+mutation Disable($ids: [ID!]!) {
+  announcementDisable(ids: $ids)
+}
+
+mutation Enable($id: ID!, $status: AnnouncementValidationStatusInput!) {
+  announcementValidationSet(id: $id, status: $status) {
+    id
+  }
+}
+
+mutation Restore($ids: [ID!]!) {
+  announcementRestore(ids: $ids) {
+    id
+  }
+}

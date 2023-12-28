@@ -1,0 +1,167 @@
+fragment AnnounListContent on Announcement {
+  id
+  title
+  slug
+  description
+  createdAt
+  price
+  pricePreview
+  priceUnit
+  oldPrice
+  oldPricePreview
+  defaultMedia(size: THUMB) {
+    mediaUrl
+  }
+  userReaction {
+    isLiked
+  }
+}
+
+query Profile($id: ID!, $page: Int!, $count: Int!) {
+  user: userGet(id: $id) {
+    id
+    displayName
+    username
+    avatarUrl
+
+    announcements(page: $page, count: $count) {
+      data {
+        ...AnnounListContent
+      }
+      paginatorInfo {
+        lastPage
+      }
+    }
+
+    announcementCount
+    followersCount
+    createdAt
+    isOnline
+  }
+}
+
+query Announ($username: String!, $count: Int!, $page: Int!) {
+  user: userGetByUsername(username: $username) {
+    id
+    list: announcements(page: $page, count: $count) {
+      data {
+        ...AnnounListContent
+      }
+      paginatorInfo {
+        hasMorePages
+        lastPage
+      }
+    }
+  }
+}
+
+query Likes($count: Int!, $page: Int!) {
+  list: announcementLikeList(
+    page: $page
+    count: $count
+    orderBy: { field: LIKED_AT, order: ASC }
+  ) {
+    data {
+      ...AnnounListContent
+    }
+    paginatorInfo {
+      hasMorePages
+      lastPage
+      count
+    }
+  }
+}
+
+query UserFollowing($count: Int!, $page: Int!) {
+  list: userFollowing(count: $count, page: $page) {
+    data {
+      id
+      username
+      displayName
+    }
+    paginatorInfo {
+      hasMorePages
+      lastPage
+    }
+  }
+}
+
+query UserFollowingAll($count: Int!, $page: Int!) {
+  list: userFollowingAll(count: $count, page: $page) {
+    data {
+      id
+      targetType
+      username
+      displayName
+      name
+      slug
+      image
+      __typename
+    }
+    paginatorInfo {
+      hasMorePages
+      lastPage
+    }
+  }
+}
+
+query UserFollowers($count: Int!, $page: Int!) {
+  list: userFollowers(count: $count, page: $page) {
+    data {
+      id
+      username
+      displayName
+    }
+    paginatorInfo {
+      hasMorePages
+      lastPage
+    }
+  }
+}
+
+query History($count: Int!, $page: Int!) {
+  list: historyList(count: $count, page: $page) {
+    data {
+      ...AnnounListContent
+    }
+    paginatorInfo {
+      hasMorePages
+      lastPage
+    }
+  }
+}
+
+query Bookmarks($count: Int, $page: Int) {
+  list: announcementBookmarkList(
+    page: $page
+    count: $count
+    orderBy: { field: BOOKMARKED_AT, order: ASC }
+  ) {
+    data {
+      id
+      title
+      slug
+      createdAt
+      price
+      pricePreview
+      priceUnit
+      oldPrice
+      oldPricePreview
+      defaultMedia(size: THUMB) {
+        mediaUrl
+      }
+    }
+    paginatorInfo {
+      hasMorePages
+      count
+      currentPage
+      lastPage
+    }
+  }
+}
+
+mutation BookmarksRemove($id: ID!) {
+  announcementBookmarkRemove(id: $id) {
+    status
+  }
+}

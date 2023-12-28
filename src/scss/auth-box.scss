@@ -1,0 +1,29 @@
+@import "~@/fonts/fonts";
+.ok-auth-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+
+  max-width: calc(100vw - 16px);
+  margin: auto;
+
+  &--fill-height {
+    height: 100vh;
+  }
+
+  &__logo {
+    margin: auto;
+    svg {
+      display: block;
+      height: 64px;
+      path {
+        fill: rgb(var(--v-theme-primary));
+      }
+    }
+  }
+}
+.full-h {
+  height: 100%;
+  box-sizing: border-box;
+}

@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "workbench.colorCustomizations": {
+      "titleBar.activeBackground": "#e95903",
+      "titleBar.inactiveBackground": "#e9590399",
+      "titleBar.activeForeground": "#e7e7e7",
+      "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "e95903",
+    "i18n-ally.localesPaths": "src/locales",
+    "i18n-ally.keystyle": "nested",
+    "i18n-ally.sourceLanguage": "fr",
+    "i18n-ally.displayLanguage": "fr"
+  }
+}

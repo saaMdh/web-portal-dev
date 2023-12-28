@@ -1,0 +1,26 @@
+release:prod:
+  stage: release
+  resource_group: production
+  image: $IMAGE_REGISTRY/git:2.37
+  extends: .config_git
+  needs:
+    - job: prod:build
+      artifacts: true
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+        - node_modules
+  script:
+    - echo 'yarn-offline-mirror "node_modules/"' >> .yarnrc
+    - echo 'yarn-offline-mirror-pruning true' >> .yarnrc
+    - >
+      RELEASE_NOTE="$(git log --oneline $(git describe --tags --abbrev=0 @^)..@ --format=%s)"
+    - git tag -a "$VERSION" -m "$RELEASE_NOTE"
+    - git push --tags
+  only:
+    - master
+  tags:
+    - build
+  when: on_success

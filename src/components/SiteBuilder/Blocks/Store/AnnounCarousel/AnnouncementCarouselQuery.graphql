@@ -1,0 +1,31 @@
+#import "@/components/Announcement/AnnouncementCard.graphql"
+
+query AnnounCarouselQuery(
+  $filter: SearchFilterInput!
+  $mediaSize: MediaSize = MEDIUM
+) {
+  search(filter: $filter) {
+    announcements {
+      data {
+        ...AnnouncementContent
+      }
+    }
+  }
+}
+
+query AnnouncementQuery(
+  $q: String
+  $filter: SearchFilterInput!
+  $mediaSize: MediaSize = MEDIUM
+) {
+  search(q: $q, filter: $filter) {
+    announcements {
+      data {
+        ...AnnouncementContent
+      }
+      paginatorInfo {
+        lastPage
+      }
+    }
+  }
+}

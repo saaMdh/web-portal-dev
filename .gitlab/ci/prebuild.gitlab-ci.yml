@@ -1,0 +1,17 @@
+prebuild:
+  stage: prebuild
+  image: registry.ouedkniss.com/node:16-alpine
+  script:
+    - yarn install --frozen-lockfile --no-progress --production=false
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+        - node_modules
+  tags:
+    - build
+  only:
+    - dev
+    - staging
+    - master

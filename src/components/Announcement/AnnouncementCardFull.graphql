@@ -1,0 +1,51 @@
+fragment AnnouncementFullContent on Announcement {
+  id
+  title
+  slug
+  createdAt: refreshedAt
+  isFromStore
+  store {
+    id
+    name
+    imageUrl
+  }
+  specs {
+    specification {
+      label
+    }
+    valueText
+  }
+  defaultMedia(size: SMALL) {
+    mediaUrl
+  }
+  userReaction {
+    isBookmarked
+    isLiked
+  }
+  likeCount
+  locations {
+    location {
+      city {
+        slug
+        name
+      }
+      region {
+        name
+        slug
+      }
+    }
+  }
+  pricePreview
+  priceUnit
+  oldPrice
+  oldPricePreview
+  categories {
+    id
+    name
+  }
+  user {
+    id
+    avatarUrl
+    displayName
+  }
+}

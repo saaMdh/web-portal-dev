@@ -1,0 +1,88 @@
+#import "@/components/Announcement/AnnouncementCard.graphql"
+#import "@/components/Announcement/AnnouncementCardMini.graphql"
+#import "@/components/Store/StoreCardFull.graphql"
+
+query PromoTopAnnounQuery(
+  $location: PromotionLocation!
+  $count: Int
+  $mediaSize: MediaSize = SMALL
+  $hideStore: Boolean = false
+) {
+  topAdList: promotionFetch(location: $location, maxCount: $count) {
+    id
+    target {
+      ... on PromotionAnnouncement {
+        ...PromotionMiniContent
+      }
+    }
+  }
+}
+
+query FrontStoreQuery($location: PromotionLocation!, $count: Int) {
+  storeList: promotionFetch(location: $location, maxCount: $count) {
+    id
+    target {
+      ... on Store {
+        ...StoreCardFullContent
+      }
+    }
+  }
+}
+
+query LikedQuery($limit: Int!) {
+  likedList: announcementLikeList(count: $limit, page: 1) {
+    data {
+      id
+      title
+      slug
+      price
+      defaultMedia(size: THUMB) {
+        mediaUrl
+      }
+    }
+  }
+}
+
+query HistoryQuery($limit: Int!) {
+  historyList(count: $limit, page: 1) {
+    data {
+      id
+      title
+      slug
+      price
+      defaultMedia(size: THUMB) {
+        mediaUrl
+      }
+    }
+  }
+}
+
+query Feed(
+  $filter: SearchFilterInput
+  $mediaSize: MediaSize = SMALL
+  $hideStore: Boolean = false
+) {
+  announcementFeed(filter: $filter) {
+    announcements {
+      data {
+        ...AnnouncementMiniContent
+      }
+      paginatorInfo {
+        hasMorePages
+      }
+    }
+  }
+}
+
+query SuggestedStoreQuery($limit: Int!) {
+  suggestedStoreList(count: $limit, page: 1) {
+    data {
+      id
+      name
+      followerCount
+      imageUrl
+      description
+      url
+    }
+  }
+}

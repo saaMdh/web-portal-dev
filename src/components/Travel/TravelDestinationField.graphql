@@ -1,0 +1,18 @@
+query TravelDestinationField($isAlgeria: Boolean, $search: String, $first: Int!, $page: Int) {
+  destinations: travelDestinationList(
+    filter: { name: $search, isAlgeria: $isAlgeria }
+    first: $first
+    page: $page
+  ) {
+    data {
+      id
+      name
+      slug
+      imageUrl
+      city {
+        id
+        name
+      }
+    }
+  }
+}

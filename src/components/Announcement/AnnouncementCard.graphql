@@ -1,0 +1,54 @@
+fragment AnnouncementContent on Announcement {
+  id
+  title
+  slug
+  createdAt: refreshedAt
+  isFromStore
+  isCommentEnabled
+  userReaction {
+    isBookmarked
+    isLiked
+  }
+  hasDelivery
+  deliveryType
+  likeCount
+  description
+  status
+  cities {
+    id
+    name
+    slug
+    region {
+      id
+      name
+      slug
+    }
+  }
+  store {
+    id
+    name
+    slug
+    imageUrl
+    isOfficial
+    isVerified
+  }
+  user {
+    id
+  }
+  defaultMedia(size: $mediaSize) {
+    mediaUrl
+    mimeType
+    thumbnail
+  }
+  price
+  pricePreview
+  priceUnit
+  oldPrice
+  oldPricePreview
+  priceType
+  exchangeType
+  category {
+    id
+    slug
+  }
+}

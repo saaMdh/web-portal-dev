@@ -1,0 +1,154 @@
+@import "~animate.css/animate.min.css";
+
+@import "~@/fonts/fonts";
+
+@import "responsive";
+
+@import "variables";
+
+@import "auth-box";
+
+.v-main {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 56px;
+  padding-bottom: 0px;
+}
+
+@media (min-width: 960px) {
+  .v-container:not(.v-container--fluid) {
+    max-width: 1280px !important;
+  }
+}
+@media (min-width: 1280px) {
+  .v-container:not(.v-container--fluid) {
+    max-width: 1324px !important;
+  }
+}
+@media (min-width: 1920px) {
+  .v-container:not(.v-container--fluid) {
+    max-width: 1324px !important;
+  }
+}
+
+.o-app {
+  &__content {
+    // Viewport height - App Bar
+    min-height: calc(100vh - 56px);
+  }
+
+  .full-h {
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  @for $i from 1 through 12 {
+    .line-height-#{$i} {
+      line-height: 1 + ($i * 0.1) !important;
+    }
+  }
+
+  @for $i from 1 through 12 {
+    .flex-gap-#{$i} {
+      gap: 4px * $i !important;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--heading-font-family);
+  }
+}
+.v-btn {
+  letter-spacing: inherit;
+}
+.v-dialog.v-dialog--active.v-dialog--persistent {
+  border: none;
+}
+@media print {
+  * {
+    color: black !important;
+  }
+}
+@import "scrollbar";
+
+@import "transition";
+
+@import "card";
+
+@import "tabs";
+
+@import "article";
+
+@import "shadow";
+
+* {
+  font-family: var(--body-font-family) !important;
+}
+div[class*="text-"] {
+  font-family: inherit !important;
+}
+.v-application {
+  font-family: var(--body-font-family) !important ;
+
+  [class*="text-"] {
+    font-family: inherit !important;
+  }
+  .v-theme--dark.v-card--light-shadow {
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .v-theme--light.v-card--light-shadow {
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .v-theme--dark.v-card--high-shadow {
+    box-shadow: 0px 2px 16px -2px rgba(0, 0, 0, 0.45);
+  }
+
+  .v-theme--light.v-card--high-shadow {
+    box-shadow: 0px 2px 16px -2px rgba(0, 0, 0, 0.14);
+  }
+
+  .v-card--rounded {
+    border-radius: 16px;
+  }
+
+  .full-h {
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .line-height-0 {
+    line-height: 0;
+  }
+
+  @for $i from 1 through 12 {
+    .line-height-#{$i} {
+      line-height: 1 + ($i * 0.1);
+    }
+  }
+
+  @for $i from 1 through 12 {
+    .flex-gap-#{$i} {
+      gap: 4px * $i;
+    }
+  }
+
+  .v-btn {
+    max-width: none;
+  }
+
+  .v-container {
+    padding: 12px;
+  }
+}
+
+//waiting for the date picker to be fixed by the Vuetify team
+.v-date-picker-month__days {
+  direction: ltr !important;
+}

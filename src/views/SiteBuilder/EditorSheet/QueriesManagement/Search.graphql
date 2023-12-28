@@ -1,0 +1,186 @@
+query SearchStoreQuery($q: String, $filter: StoreSearchFilterInput) {
+  searchStore: storeSearch(q: $q, filter: $filter) {
+    data {
+      id
+      name
+      slug
+      description
+      imageUrl
+      followerCount
+      announcementsCount
+      url
+      announcements(count: 6, page: 1) {
+        data {
+          id
+          defaultMedia(size: THUMB) {
+            mediaUrl
+          }
+        }
+      }
+    }
+  }
+}
+
+query SearchQuery($q: String, $filter: SearchFilterInput) {
+  search(q: $q, filter: $filter) {
+    active {
+      category {
+        id
+        name
+        slug
+        icon
+        delivery
+        priceUnits
+        children {
+          id
+          name
+          slug
+        }
+        specifications {
+          isRequired
+          specification {
+            id
+            codename
+            label
+            type
+            class
+            datasets {
+              codename
+              label
+            }
+            dependsOn {
+              id
+              codename
+            }
+            subSpecifications {
+              id
+              codename
+              label
+              type
+            }
+            allSubSpecificationCodenames
+          }
+        }
+        parentTree {
+          id
+          name
+          slug
+          icon
+          children {
+            id
+            name
+            slug
+            icon
+          }
+        }
+        parent {
+          id
+          name
+          icon
+        }
+      }
+      count
+    }
+    suggested {
+      category {
+        id
+        name
+        slug
+      }
+      count
+    }
+  }
+}
+
+query SearchQueryWithoutFilters($q: String, $filter: SearchFilterInput) {
+  search(q: $q, filter: $filter) {
+    active {
+      category {
+        id
+        name
+        delivery
+        slug
+      }
+      count
+    }
+    suggested {
+      category {
+        id
+        name
+        slug
+      }
+      count
+    }
+  }
+}
+
+query PromoSquareQuery(
+  $location: PromotionLocation!
+  $count: Int
+  $categoryId: ID
+) {
+  squarePromo: promotionFetch(
+    location: $location
+    maxCount: $count
+    categoryId: $categoryId
+  ) {
+    id
+    target {
+      ... on Store {
+        id
+        name
+        description
+        imageUrl
+        followerCount
+        announcementsCount
+        url
+        slug
+        announcements(count: 6, page: 1) {
+          data {
+            id
+            defaultMedia(size: SMALL) {
+              mediaUrl
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query TopAnnounQuery(
+  $location: PromotionLocation!
+  $count: Int
+  $categoryId: ID
+  $mediaSize: MediaSize = SMALL
+  $hideStore: Boolean = false
+) {
+  topAnnounList: promotionFetch(
+    location: $location
+    maxCount: $count
+    categoryId: $categoryId
+  ) {
+    id
+    target {
+      ... on PromotionAnnouncement {
+        ...PromotionMiniContent
+      }
+    }
+  }
+}
+
+query PromoFeedListQuery($location: PromotionLocation!, $categoryId: ID) {
+  promos: promotionFetch(location: $location, categoryId: $categoryId) {
+    id
+    targetLink
+    currentVisual {
+      media {
+        mediaUrl: media
+        mimeType
+        width
+        height
+        background
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+mutation Submit($request: QuoteRequestInput!) {
+  travelQuoteRequest(quoteRequest: $request) {
+    id
+  }
+}
+
+query DestinationGroup {
+  destinationsGroup: travelDestinationListByContinent {
+    continent {
+      id
+      name
+    }
+    destinations(first: 9) {
+      data {
+        id
+        name
+        slug
+        imageUrl
+        city {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+query DestinationGet($id: ID!) {
+  destination: travelDestinationGet(id: $id) {
+    id
+    name
+    slug
+    imageUrl
+    city {
+      id
+      name
+    }
+  }
+}

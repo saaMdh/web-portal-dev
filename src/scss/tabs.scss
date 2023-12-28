@@ -1,0 +1,15 @@
+
+.v-tabs--dense {
+  .v-tabs-bar {
+    height: 40px;
+  }
+
+  .v-slide-group__next, .v-slide-group__prev  {
+      min-width: 36px;
+  }
+
+  .v-tab {
+    font-size: 0.675rem;
+    padding: 0 8px;
+  }
+}

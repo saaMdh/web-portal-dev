@@ -1,0 +1,61 @@
+query PromoContentQuery(
+  $location: PromotionLocation!
+  $count: Int
+  $categoryId: ID
+  $categorySlug: String
+  $withoutAdSense: Boolean = false
+) {
+  promo: promotionFetch(
+    location: $location
+    maxCount: $count
+    categoryId: $categoryId
+    categorySlug: $categorySlug
+    withoutAdSense: $withoutAdSense
+  ) {
+    id
+    targetLink
+    isAdsense
+    timeout
+    currentVisual {
+      media {
+        mediaUrl: media
+        mimeType
+        width
+        height
+        background
+      }
+      mediaBackground {
+        media
+        mimeType
+        background
+      }
+    }
+  }
+}
+
+query PromoSliderQuery(
+  $location: PromotionLocation!
+  $count: Int
+  $categoryId: ID
+  $categorySlug: String
+) {
+  list: promotionFetch(
+    location: $location
+    maxCount: $count
+    categoryId: $categoryId
+    categorySlug: $categorySlug
+  ) {
+    id
+    targetLink
+    currentVisual {
+      media {
+        mediaUrl: media
+        mimeType
+      }
+      mediaMobile {
+        mediaUrl: media
+        mimeType
+      }
+    }
+  }
+}

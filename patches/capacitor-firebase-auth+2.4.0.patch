@@ -1,0 +1,19 @@
+diff --git a/node_modules/capacitor-firebase-auth/dist/esm/alternative/alternative.js b/node_modules/capacitor-firebase-auth/dist/esm/alternative/alternative.js
+index 3b58d79..3deb8af 100644
+--- a/node_modules/capacitor-firebase-auth/dist/esm/alternative/alternative.js
++++ b/node_modules/capacitor-firebase-auth/dist/esm/alternative/alternative.js
+@@ -72,12 +72,13 @@ export const cfaSignInFacebook = () => {
+             // create the credentials
+             const credential = firebase.auth.FacebookAuthProvider.credential(result.idToken);
+             // web sign in
++            console.log({ credential });
+             firebase.app().auth().signInWithCredential(credential)
+                 .then((userCredential) => {
+                 observer.next({ userCredential, result });
+                 observer.complete();
+             })
+-                .catch((reject) => observer.error(reject));
++                .catch((reject) => { console.log(reject); return observer.error({ ...reject ,  'access_token' : credential.accessToken })} );
+         }).catch(reject => observer.error(reject));
+     });
+ };

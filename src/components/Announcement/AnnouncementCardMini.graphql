@@ -1,0 +1,58 @@
+fragment AnnouncementMiniContent on Announcement {
+  id
+  title
+  slug
+  isFromStore
+  store {
+    id
+  }
+  store @skip(if: $hideStore) {
+    name
+    imageUrl
+  }
+  defaultMedia(size: $mediaSize) {
+    mediaUrl
+  }
+  userReaction {
+    isBookmarked
+    isLiked
+  }
+  hasDelivery
+  deliveryType
+  likeCount
+  hasPhone
+  status
+  pricePreview
+  priceUnit
+  oldPrice
+  oldPricePreview
+  user {
+    id
+  }
+}
+
+fragment PromotionMiniContent on PromotionAnnouncement {
+  id
+  title
+  slug
+  store @skip(if: $hideStore) {
+    id
+    name
+    imageUrl
+  }
+  defaultMedia(size: $mediaSize) {
+    mediaUrl
+    mimeType
+    thumbnail
+  }
+  pricePreview
+  priceUnit
+  oldPrice
+  oldPricePreview
+  userId
+  userReaction {
+    isBookmarked
+    isLiked
+  }
+  likeCount
+}

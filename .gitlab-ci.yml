@@ -1,0 +1,31 @@
+stages:
+  - prebuild
+  - build
+  - deploy
+  - release
+
+before_script:
+  - export PROJECT_NAME=$(echo $CI_PROJECT_NAME |  tr "[:upper:]" "[:lower:]")
+
+.get_version:
+  before_script:
+    - export PROJECT_NAME=$(echo $CI_PROJECT_NAME |  tr "[:upper:]" "[:lower:]")
+    - >
+       echo "VERSION=$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+
+.config_git:
+  before_script:
+    - |
+      git config --global user.email "$GITLAB_TOKEN_NAME@ouedkniss.com"
+      git config --global user.name "$GITLAB_TOKEN_NAME"
+      git config --global user.password "$GITLAB_TOKEN"
+      git remote set-url origin "https://$GITLAB_TOKEN_NAME:$GITLAB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
+
+include:
+  - local: /.gitlab/ci/prebuild.gitlab-ci.yml
+  - local: /.gitlab/ci/build.gitlab-ci.yml
+  - local: /.gitlab/ci/deploy.gitlab-ci.yml
+  - local: /.gitlab/ci/release.gitlab-ci.yml

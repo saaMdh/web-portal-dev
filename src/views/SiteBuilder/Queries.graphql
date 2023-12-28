@@ -1,0 +1,229 @@
+fragment SiteBuildLayout on SiteBuild {
+  id
+
+  createdAt
+  publishedAt
+  saved
+  screenshotUrl
+  theme {
+    font
+    dark
+    color
+    backgroundColor
+    backgroundImg {
+      full
+      thumb
+    }
+  }
+
+  pages {
+    title {
+      fr
+      ar
+      en
+    }
+    type
+    slug
+    backgroundColor
+    backgroundImg {
+      full
+      thumb
+    }
+    visible
+    blocks {
+      type
+      layout
+      attrs
+    }
+  }
+
+  headers {
+    type
+    layout
+    attrs
+  }
+
+  footers {
+    type
+    layout
+    attrs
+  }
+  queries {
+    name {
+      fr
+      en
+      ar
+    }
+    q
+    count
+    type
+    filter
+    cluster {
+      name {
+        fr
+        en
+        ar
+      }
+      q
+      count
+      filter
+    }
+  }
+  land {
+    __typename
+    ... on Market {
+      id
+      marketName: name
+      descreption
+      metakeywords
+      logo
+    }
+    ... on Store {
+      id
+      storeName: name
+      slug
+      description
+      imageUrl
+      iAmFollowing
+      status
+      categories {
+        id
+        name
+        slug
+        children {
+          id
+          name
+          slug
+        }
+      }
+      mainLocation {
+        id
+        worktime
+        phones
+        emails
+        faxes
+        socials {
+          name
+          url
+        }
+        location {
+          id
+          address
+          lat
+          lng
+        }
+      }
+      users {
+        user {
+          id
+        }
+      }
+      service {
+        params {
+          code
+          value
+        }
+      }
+    }
+  }
+}
+
+query FetchByStore($id: ID!) {
+  siteBuild: siteBuildGetByStore(storeId: $id) {
+    ...SiteBuildLayout
+  }
+}
+
+query FetchByDomain($domain: String!) {
+  siteBuild: siteBuildGetByDomain(domain: $domain) {
+    ...SiteBuildLayout
+  }
+}
+
+query FetchByMarket($id: ID!) {
+  siteBuild: siteBuildGetByMarket(marketId: $id) {
+    ...SiteBuildLayout
+  }
+}
+
+query siteBuildGetById($id: ID!, $LaunchType: LaunchType!, $landId: ID!) {
+  siteBuild: siteBuildGetById(
+    id: $id
+    LaunchType: $LaunchType
+    landId: $landId
+  ) {
+    ...SiteBuildLayout
+  }
+}
+
+mutation Update($id: ID!, $LaunchType: LaunchType!, $build: SiteBuildInput!) {
+  siteBuild: siteBuildCommit(id: $id, LaunchType: $LaunchType, build: $build) {
+    id
+  }
+}
+
+mutation Publish($id: ID!, $siteBuildId: ID!, $LaunchType: LaunchType!) {
+  siteBuild: siteBuildPublish(
+    id: $id
+    siteBuildId: $siteBuildId
+    LaunchType: $LaunchType
+  ) {
+    id
+  }
+}
+
+mutation SaveBlueprint(
+  $id: ID!
+  $LaunchType: LaunchType!
+  $build: SiteBuildInput!
+) {
+  siteBuild: siteBuildSave(id: $id, LaunchType: $LaunchType, build: $build) {
+    ...SiteBuildLayout
+  }
+}
+
+mutation SelectBlueprint($id: ID!, $LaunchType: LaunchType!) {
+  siteBuild: siteBuildSelect(id: $id, LaunchType: $LaunchType)
+}
+
+mutation DeleteBlueprint($id: ID!, $LaunchType: LaunchType!) {
+  siteBuild: siteBuildDelete(id: $id, LaunchType: $LaunchType)
+}
+
+query Blueprint($id: ID!, $LaunchType: LaunchType!, $count: Int, $page: Int) {
+  blueprint: siteBuildGetSaved(
+    id: $id
+    LaunchType: $LaunchType
+    count: $count
+    page: $page
+  ) {
+    data {
+      id
+      createdAt
+      publishedAt
+      screenshotUrl
+    }
+    paginatorInfo {
+      pageCount
+    }
+  }
+}
+
+query History($id: ID!, $LaunchType: LaunchType!, $count: Int, $page: Int) {
+  history: siteBuildGetHistory(
+    id: $id
+    LaunchType: $LaunchType
+    count: $count
+    page: $page
+  ) {
+    data {
+      id
+      createdAt
+      publishedAt
+      screenshotUrl
+    }
+    paginatorInfo {
+      pageCount
+    }
+  }
+}

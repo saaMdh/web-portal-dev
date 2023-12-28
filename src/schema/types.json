@@ -1,0 +1,51 @@
+{
+  "__schema": {
+    "types": [
+      {
+        "kind": "UNION",
+        "name": "PromotionTarget",
+        "possibleTypes": [
+          {
+            "name": "Store"
+          },
+          {
+            "name": "Announcement"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "AdsPromotionTarget",
+        "possibleTypes": [
+          {
+            "name": "Store"
+          },
+          {
+            "name": "PromotionAnnouncement"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "NotificationTarget",
+        "possibleTypes": [
+          {
+            "name": "Store"
+          },
+          {
+            "name": "Announcement"
+          },
+          {
+            "name": "DeliveryOrder"
+          },
+          {
+            "name": "TravelQuoteRequest"
+          },
+          {
+            "name": "Promotion"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+#import "@/components/Announcement/AnnouncementCard.graphql"
+
+query AnnouncementBrowser(
+  $q: String
+  $filter: SearchFilterInput!
+  $mediaSize: MediaSize = SMALL
+) {
+  search(q: $q, filter: $filter) {
+    announcements {
+      data {
+        ...AnnouncementContent
+      }
+      paginatorInfo {
+        lastPage
+      }
+    }
+  }
+}

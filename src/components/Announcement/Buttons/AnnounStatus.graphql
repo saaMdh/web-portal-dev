@@ -1,0 +1,25 @@
+mutation Like($id: ID!) {
+  likeData: announcementLike(id: $id) {
+    status
+    count
+  }
+}
+
+mutation Dislike($id: ID!) {
+  dislikeData: announcementDislike(id: $id) {
+    status
+    count
+  }
+}
+
+mutation BookmarkAdd($id: ID!) {
+  bookmarkData: announcementBookmarkAdd(id: $id) {
+    status
+  }
+}
+
+mutation BookmarkRemove($id: ID!) {
+  bookmarkData: announcementBookmarkRemove(id: $id) {
+    status
+  }
+}

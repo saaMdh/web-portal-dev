@@ -1,0 +1,76 @@
+.o-article {
+  font-size: 1.1rem;
+
+  h1.o-article__title,
+  .o-article__static h1 {
+    &:first-child {
+      margin-top: 0.5rem;
+
+      @include isDesktop {
+        margin-top: 2rem;
+      }
+    }
+
+    margin-top: 2rem;
+
+    padding: 0.25rem 0;
+
+    font-weight: 300;
+    font-size: 1.5rem;
+
+    border-bottom: 1px solid #bebebe;
+
+    @include isDesktop {
+      margin-top: 4rem;
+      font-size: 2rem;
+    }
+  }
+
+  h2.o-article__title,
+  .o-article__static h2 {
+    margin-top: 2rem;
+    padding: 0.25rem 0;
+
+    font-size: 1.4rem;
+    font-weight: 300;
+    text-align: left;
+
+    border-bottom: 1px solid #bebebe;
+
+    @include isDesktop {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  h1,
+  h2,
+  h3 {
+    & + p,
+    & + ul,
+    & + ol {
+      margin-top: 0.5rem;
+    }
+  }
+
+  h3.o-article__title,
+  .o-article__static h3 {
+    margin-top: 2rem;
+
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  table {
+    width: 100%;
+
+    th {
+      text-align: left;
+    }
+  }
+}

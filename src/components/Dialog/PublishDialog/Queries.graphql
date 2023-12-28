@@ -1,0 +1,48 @@
+mutation Submit($announcement: AnnouncementInput!) {
+  announcementCreate(announcement: $announcement) {
+    id
+  }
+}
+
+query CategoryGetSpecs($id: ID!) {
+  categoryGet(id: $id) {
+    id
+    name
+    priceUnits
+    specifications {
+      isRequired
+      quickAnnouncementEnabled
+      specification {
+        id
+        label
+        codename
+        class
+        type
+        withTags
+        hasOther
+        dependsOn {
+          id
+          codename
+        }
+        datasets {
+          codename
+          label
+        }
+      }
+    }
+    parentTree {
+      slug
+    }
+  }
+}
+
+query DeferDataset($codename: String!, $values: [String!]!, $tags: [String!]) {
+  deferDataset: specificationDataSetGet(
+    codename: $codename
+    values: $values
+    tags: $tags
+  ) {
+    codename
+    label
+  }
+}

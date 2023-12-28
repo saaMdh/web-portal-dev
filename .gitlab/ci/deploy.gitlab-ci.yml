@@ -1,0 +1,228 @@
+.deploy:
+  stage: deploy
+  image: $IMAGE_REGISTRY/alpine-helm:3.4.1
+  variables:
+    CHART_TAG: latest
+  script:
+    - export HELM_EXPERIMENTAL_OCI=1
+    - helm chart pull $IMAGE_REGISTRY/atlantis/charts/web-portal:$CHART_TAG
+    - helm chart export $IMAGE_REGISTRY/atlantis/charts/web-portal:$CHART_TAG
+    - >
+      helm upgrade --install --namespace $NAMESPACE --wait
+      --set nodeSelector."node-role\.kubernetes\.io/$NODE_SELECTOR"="$NODE_SELECTOR"
+      --set ingress.host=$INGRESS_HOST
+      --set replicaCount=$REPLICA_COUNT
+      --set image.tag=$IMAGE_TAG
+      --set app.version=$VERSION
+      --set namespace=$NAMESPACE
+      --set hpa.minReplicas=$HPA_MIN_REPLICAS
+      --set hpa.maxReplicas=$HPA_MAX_REPLICAS
+      --set resources.limits.cpu=$LIMIT_CPU
+      --set resources.limits.memory=$LIMIT_RAM
+      --set resources.requests.cpu=$REQUEST_CPU
+      --set resources.requests.memory=$REQUEST_RAM
+      -f ./web-portal/values.yaml
+      $PROJECT_PREFIX$PROJECT_NAME
+      ./web-portal/
+
+dev:deploy:
+  extends: .deploy
+  resource_group: dev
+  variables:
+    CHART_TAG: dev
+    NODE_SELECTOR: worker
+    INGRESS_HOST: dev.ouedkniss.com
+    REPLICA_COUNT: 1
+    IMAGE_TAG: dev
+    APP_VERSION: $VERSION
+    NAMESPACE: atlantis
+    HPA_MIN_REPLICAS: 1
+    HPA_MAX_REPLICAS: 2
+    LIMIT_CPU: 500m
+    LIMIT_RAM: 750Mi
+    REQUEST_CPU: 100m
+    REQUEST_RAM: 100Mi
+  needs:
+    - job: dev:build
+      artifacts: true
+  environment:
+    name: dev
+    url: https://dev.ouedkniss.com
+  only:
+    - dev
+  tags:
+    - k8s
+
+testing:deploy:
+  extends: .deploy
+  resource_group: testing
+  variables:
+    CHART_TAG: dev
+    NODE_SELECTOR: worker
+    INGRESS_HOST: testing.ouedkniss.com
+    REPLICA_COUNT: 1
+    IMAGE_TAG: testing
+    APP_VERSION: $VERSION
+    NAMESPACE: atlantis-testing
+    HPA_MIN_REPLICAS: 1
+    HPA_MAX_REPLICAS: 1
+    LIMIT_CPU: 500m
+    LIMIT_RAM: 750Mi
+    REQUEST_CPU: 100m
+    REQUEST_RAM: 100Mi
+  needs:
+    - job: testing:build
+      artifacts: true
+  environment:
+    name: testing
+    url: https://testing.ouedkniss.com
+  except:
+    - dev
+    - staging
+    - master
+  tags:
+    - k8s
+  when: on_success
+
+staging:deploy:
+  extends: .deploy
+  resource_group: staging
+  variables:
+    NODE_SELECTOR: worker
+    INGRESS_HOST: staging.ouedkniss.com
+    REPLICA_COUNT: 1
+    IMAGE_TAG: staging
+    APP_VERSION: $VERSION
+    NAMESPACE: atlantis-staging
+    HPA_MIN_REPLICAS: 1
+    HPA_MAX_REPLICAS: 1
+    LIMIT_CPU: 500m
+    LIMIT_RAM: 750Mi
+    REQUEST_CPU: 100m
+    REQUEST_RAM: 100Mi
+  needs:
+    - job: staging:build
+      artifacts: true
+  environment:
+    name: staging
+    url: https://staging.ouedkniss.com
+  only:
+    - staging
+  tags:
+    - k8s
+
+djezzy:deploy:
+  extends: .deploy
+  resource_group: djezzy
+  variables:
+    CHART_TAG: djezzy
+    NODE_SELECTOR: apps
+    INGRESS_HOST: djezzyfront.ouedkniss.com
+    REPLICA_COUNT: 1
+    IMAGE_TAG: djezzy
+    APP_VERSION: $VERSION
+    NAMESPACE: atlantis
+    HPA_MIN_REPLICAS: $PROD_HPA_MIN_REPLICA
+    HPA_MAX_REPLICAS: $PROD_HPA_MAX_REPLICA
+    LIMIT_CPU: $PROD_LIMIT_CPU
+    LIMIT_RAM: $PROD_LIMIT_RAM
+    REQUEST_CPU: $PROD_REQUEST_CPU
+    REQUEST_RAM: $PROD_REQUEST_RAM
+    PROJECT_PREFIX: djezzy-
+  needs:
+    - job: djezzy:build
+      artifacts: true
+  environment:
+    name: prod
+    url: https://djezzyfront.ouedkniss.com
+  only:
+    - djezzy
+  tags:
+    - k8s_prod
+    - prod
+
+prod:deploy:
+  extends: .deploy
+  resource_group: prod
+  variables:
+    NODE_SELECTOR: apps
+    INGRESS_HOST: $PROD_MAIN_DOMAIN
+    REPLICA_COUNT: $PROD_REPLICA
+    IMAGE_TAG: master
+    APP_VERSION: $VERSION
+    NAMESPACE: atlantis
+    HPA_MIN_REPLICAS: $PROD_HPA_MIN_REPLICA
+    HPA_MAX_REPLICAS: $PROD_HPA_MAX_REPLICA
+    LIMIT_CPU: $PROD_LIMIT_CPU
+    LIMIT_RAM: $PROD_LIMIT_RAM
+    REQUEST_CPU: $PROD_REQUEST_CPU
+    REQUEST_RAM: $PROD_REQUEST_RAM
+  needs:
+    - job: prod:build
+      artifacts: true
+  environment:
+    name: prod
+    url: https://www.ouedkniss.com
+  only:
+    - master
+  tags:
+    - k8s_prod
+    - prod
+
+prod:dz:deploy:
+  extends: .deploy
+  resource_group: prod_dz
+  variables:
+    NODE_SELECTOR: apps
+    INGRESS_HOST: $PROD_DZ_MAIN_DOMAIN
+    REPLICA_COUNT: $PROD_REPLICA
+    IMAGE_TAG: master-dz
+    APP_VERSION: $VERSION
+    NAMESPACE: atlantis
+    HPA_MIN_REPLICAS: $PROD_HPA_MIN_REPLICA
+    HPA_MAX_REPLICAS: $PROD_HPA_MAX_REPLICA
+    LIMIT_CPU: $PROD_LIMIT_CPU
+    LIMIT_RAM: $PROD_LIMIT_RAM
+    REQUEST_CPU: $PROD_REQUEST_CPU
+    REQUEST_RAM: $PROD_REQUEST_RAM
+    PROJECT_PREFIX: dz-
+  needs:
+    - job: prod:dz:build
+      artifacts: true
+  environment:
+    name: prod
+    url: https://www.ouedkniss.com.dz
+  only:
+    - master
+  tags:
+    - k8s_prod
+    - prod
+
+prod:dz2:deploy:
+  extends: .deploy
+  resource_group: prod_dz2
+  variables:
+    NODE_SELECTOR: apps
+    INGRESS_HOST: $PROD_DZ2_MAIN_DOMAIN
+    REPLICA_COUNT: $PROD_REPLICA
+    IMAGE_TAG: master-dz2
+    APP_VERSION: $VERSION
+    NAMESPACE: atlantis
+    HPA_MIN_REPLICAS: $PROD_HPA_MIN_REPLICA
+    HPA_MAX_REPLICAS: $PROD_HPA_MAX_REPLICA
+    LIMIT_CPU: $PROD_LIMIT_CPU
+    LIMIT_RAM: $PROD_LIMIT_RAM
+    REQUEST_CPU: $PROD_REQUEST_CPU
+    REQUEST_RAM: $PROD_REQUEST_RAM
+    PROJECT_PREFIX: dz2-
+  needs:
+    - job: prod:dz2:build
+      artifacts: true
+  environment:
+    name: prod
+    url: https://www.ouedkniss.dz
+  only:
+    - master
+  tags:
+    - k8s_prod
+    - prod

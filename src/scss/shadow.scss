@@ -1,0 +1,35 @@
+.o-app {
+  &.v-theme--light {
+    --v-shadow: #d1d1d1;
+  }
+
+  &.v-theme--dark {
+    --v-shadow: #373737;
+  }
+  .v-sheet.v-card:not(.v-sheet--outlined, .o-service-card) {
+    box-shadow: none;
+  
+  }
+
+  .v-navigation-drawer--is-mobile:not(.v-navigation-drawer--close),
+  .v-navigation-drawer--temporary:not(.v-navigation-drawer--close) {
+    box-shadow: none;
+  }
+
+  .v-bottom-sheet {
+    border-top: 1px solid var(--v-shadow);
+    box-shadow: none;
+  }
+
+  .v-menu {
+    &__content {
+      border: 1px solid var(--v-shadow);
+      border-bottom: 3px solid var(--v-shadow);
+      box-shadow: none;
+    }
+  }
+
+  .v-dialog {
+    box-shadow: none;
+  }
+}

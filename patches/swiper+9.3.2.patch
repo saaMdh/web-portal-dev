@@ -1,0 +1,30 @@
+diff --git a/node_modules/swiper/modules/zoom/zoom.js b/node_modules/swiper/modules/zoom/zoom.js
+index ea55eb5..ae930f0 100644
+--- a/node_modules/swiper/modules/zoom/zoom.js
++++ b/node_modules/swiper/modules/zoom/zoom.js
+@@ -6,6 +6,7 @@ export default function Zoom({
+   on,
+   emit
+ }) {
++
+   const window = getWindow();
+   extendParams({
+     zoom: {
+@@ -168,7 +169,7 @@ export default function Zoom({
+     if (zoom.scale < params.minRatio) {
+       zoom.scale = params.minRatio + 1 - (params.minRatio - zoom.scale + 1) ** 0.5;
+     }
+-    gesture.imageEl.style.transform = `translate3d(0,0,0) scale(${zoom.scale})`;
++    gesture.imageEl.style.transform = `translate3d(0,0,0) scale(${Math.min(Math.max(zoom.scale, params.minRatio), params.maxRatio)})`;
+   }
+   function onGestureEnd(e) {
+     if (!eventWithinSlide(e)) return;
+@@ -442,7 +443,7 @@ export default function Zoom({
+     gesture.imageWrapEl.style.transitionDuration = '300ms';
+     gesture.imageWrapEl.style.transform = `translate3d(${translateX}px, ${translateY}px,0)`;
+     gesture.imageEl.style.transitionDuration = '300ms';
+-    gesture.imageEl.style.transform = `translate3d(0,0,0) scale(${zoom.scale})`;
++    gesture.imageEl.style.transform = `translate3d(0,0,0) scale(${Math.min(Math.max(zoom.scale, params.minRatio), params.maxRatio)})`;
+   }
+   function zoomOut() {
+     const zoom = swiper.zoom;

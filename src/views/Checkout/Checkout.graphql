@@ -1,0 +1,276 @@
+fragment CheckoutContent on Cart {
+  chunks {
+    id
+
+    store {
+      id
+      name
+      imageUrl
+      hasProductManagement
+    }
+
+    provider {
+      id
+      provider {
+        id
+        name
+      }
+    }
+
+    contact {
+      name
+    }
+
+    items {
+      id
+      quantity
+      itemPrice
+      total
+      isMerchant
+      variant {
+        id
+        quantity
+        specifications {
+          valueText
+        }
+        price
+      }
+
+      announcement {
+        id
+        title
+        slug
+        pricePreview
+        priceUnit
+        oldPrice
+        oldPricePreview
+        quantity
+        defaultMedia(size: THUMB) {
+          mediaUrl
+        }
+      }
+    }
+
+    itemsPrice
+    deliveryPrice
+    total
+  }
+}
+
+fragment CheckoutContentChunk on CartChunk {
+  id
+
+  store {
+    id
+    name
+    imageUrl
+    hasProductManagement
+    slug
+  }
+
+  provider {
+    id
+    provider {
+      id
+      name
+    }
+  }
+
+  contact {
+    name
+    note
+  }
+
+  items {
+    id
+    quantity
+    itemPrice
+    total
+    updateQuantityDisabled
+    isMerchant
+    variant {
+      id
+      quantity
+      specifications {
+        valueText
+      }
+      price
+    }
+
+    announcement {
+      id
+      title
+      slug
+      pricePreview
+      priceUnit
+      oldPrice
+      oldPricePreview
+      quantity
+      category {
+        id
+        slug
+      }
+      defaultMedia(size: THUMB) {
+        mediaUrl
+      }
+    }
+  }
+
+  itemsPrice
+  deliveryPrice
+  total
+  isSelfDelivery
+  loadProviders
+}
+
+query Checkout {
+  cart: cartGet {
+    ...CheckoutContent
+  }
+}
+
+query CheckoutChunk($id: ID!) {
+  chunk: cartGetChunk(id: $id) {
+    ...CheckoutContentChunk
+  }
+}
+
+mutation CartUpdateChunkItems($chunkId: ID!, $items: [CartUpdateItemInput]) {
+  chunk: cartUpdateChunkItems(chunkId: $chunkId, items: $items) {
+    ...CheckoutContentChunk
+  }
+}
+
+mutation CartSetContact($chunkId: ID!, $info: CartContactInput!) {
+  cart: cartSetContact(chunkId: $chunkId, info: $info) {
+    ...CheckoutContent
+  }
+}
+
+mutation CartSetProvider($chunkId: ID!, $announcementProviderId: ID!) {
+  cart: cartSetProvider(
+    chunkId: $chunkId
+    announcementProviderId: $announcementProviderId
+  ) {
+    ...CheckoutContent
+  }
+}
+
+query cartGetAvailableProviders($chunkId: ID!, $addressId: ID) {
+  providers: cartGetAvailableProviders(
+    chunkId: $chunkId
+    addressId: $addressId
+  ) {
+    id
+    provider {
+      id
+      name
+      imageUrl
+    }
+    duration {
+      min
+      max
+      unit
+    }
+    deliveryPrice
+  }
+}
+
+query cartGetAvailableRelayPoints($chunkId: ID!, $addressId: ID) {
+  relayPoints: cartGetAvailableRelayPoints(
+    chunkId: $chunkId
+    addressId: $addressId
+  ) {
+    id
+    provider {
+      id
+      name
+      imageUrl
+    }
+    duration {
+      min
+      max
+      unit
+    }
+    deliveryPrice
+    relayPoint {
+      id
+      name
+      address
+      phones
+      lat
+      lng
+      region {
+        id
+        name
+      }
+      city {
+        id
+        name
+      }
+    }
+  }
+}
+
+fragment UserPhoneData on User {
+  id
+  phones {
+    id
+    phone
+    isValidated
+    isPrimary
+    isLocked
+  }
+}
+
+query GetCurrentUser {
+  userPhoneData: me {
+    ...UserPhoneData
+  }
+}
+
+query GetUser($id: ID!) {
+  userPhoneData: userGet(id: $id) {
+    ...UserPhoneData
+  }
+}
+
+query GetPhoneValidationList {
+  phoneValidationList
+}
+
+mutation UserPhoneCreate($phoneNumber: String!) {
+  userPhoneCreate(phoneNumber: $phoneNumber) {
+    id
+    phone
+  }
+}
+
+mutation UserAddressCreate($address: LocationInput!) {
+  userAddressCreate(address: $address) {
+    id
+  }
+}
+
+mutation UserPhoneCreateForAdmin($userId: ID!, $phoneNumber: String!) {
+  userPhoneCreateForAdmin(userId: $userId, phoneNumber: $phoneNumber) {
+    id
+    phone
+  }
+}
+
+mutation UserPhoneDelete($id: ID!) {
+  userPhoneDelete(id: $id) {
+    id
+  }
+}
+
+mutation UserPhoneDeleteForAdmin($userId: ID!, $id: ID!) {
+  userPhoneDeleteForAdmin(userId: $userId, id: $id) {
+    id
+  }
+}
+
+query UserPhoneValidation($id: ID!) {
+  isValide: userPhoneValidation(id: $id)
+}
